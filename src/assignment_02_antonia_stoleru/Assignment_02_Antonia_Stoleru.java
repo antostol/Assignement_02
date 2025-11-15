@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 
 /**
  *
- * @author Raluca
+ * @author Antonia Stoleru
  */
 public class Assignment_02_Antonia_Stoleru extends Application {
 
@@ -21,6 +21,7 @@ public class Assignment_02_Antonia_Stoleru extends Application {
 
     @Override
     public void start(Stage stage) {
+        
     }
     
 }
