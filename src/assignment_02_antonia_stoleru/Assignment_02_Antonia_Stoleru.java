@@ -4,17 +4,23 @@
  */
 package assignment_02_antonia_stoleru;
 
+import javafx.application.Application;
+import javafx.stage.Stage;
+
 /**
  *
  * @author Raluca
  */
-public class Assignment_02_Antonia_Stoleru {
+public class Assignment_02_Antonia_Stoleru extends Application {
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+    }
+
+    @Override
+    public void start(Stage stage) {
     }
     
 }
