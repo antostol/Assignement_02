@@ -60,11 +60,25 @@ public class SlideShowController implements Initializable {
         contestants = loadContestants();
 
         imageA.setImage(contestants.get(0).image);
+        imageA.setOpacity(0);
+        
         runnerId.setText("Contestant #" + contestants.get(0).number + ": " + contestants.get(0).name);
+        runnerId.setOpacity(0);
         
         paneB.setVisible(false);
-
-        slideShow();
+        paneB.setDisable(true);
+        
+        FadeTransition imgIn = new FadeTransition(Duration.millis(1200), imageA);
+        imgIn.setFromValue(0);
+        imgIn.setToValue(1);
+        
+        FadeTransition txtIn = new FadeTransition(Duration.millis(1200), runnerId);
+        txtIn.setFromValue(0);
+        txtIn.setToValue(1);
+        
+        ParallelTransition initialIn = new ParallelTransition(imgIn, txtIn);
+        initialIn.setOnFinished(e -> slideShow());
+        initialIn.play();
     }
 
     private List<Contestant> loadContestants() {
@@ -95,57 +109,86 @@ public class SlideShowController implements Initializable {
         double width = root.getPrefWidth();
 
         SequentialTransition seq = new SequentialTransition();
+        
+        PauseTransition firstPause = new PauseTransition(Duration.seconds(0.8));
+        firstPause.setOnFinished(e -> playSlide(contestants.get(1), width));
+        seq.getChildren().add(firstPause);
 
-        for (int i = 1; i < contestants.size(); i++) {
+        for (int i = 2; i < contestants.size(); i++) {
             
             Contestant next = contestants.get(i);
-
-            PauseTransition pause = new PauseTransition(Duration.seconds(1.7));
-
-            pause.setOnFinished(e -> {
-                
-                paneB.setTranslateX(width);
-                paneB.setOpacity(0);
-                paneB.setVisible(true);
-                
-                imageB.setImage(next.image);
-                
-                runnerId.setText("Contestant #" + next.number + ": " + next.name);
-
-                TranslateTransition slideIn = new TranslateTransition(Duration.millis(1000), paneB);
-                slideIn.setFromX(width);
-                slideIn.setToX(0);
-
-                FadeTransition fadeIn = new FadeTransition(Duration.millis(1000), paneB);
-                fadeIn.setFromValue(0);
-                fadeIn.setToValue(1);
-
-                TranslateTransition slideOut = new TranslateTransition(Duration.millis(1000), paneA);
-                slideOut.setFromX(0);
-                slideOut.setToX(-width);
-
-                FadeTransition fadeOut = new FadeTransition(Duration.millis(1000), paneA);
-                fadeOut.setFromValue(1);
-                fadeOut.setToValue(0);
-
-                ParallelTransition trans = new ParallelTransition(slideIn, fadeIn, slideOut, fadeOut);
-
-                trans.setOnFinished(ev -> {
-                    imageA.setImage(next.image);
-                    paneA.setTranslateX(0);
-                    paneA.setOpacity(1);
-                    paneB.setVisible(false);
-                });
-
-                trans.play();
-
-            });
-
-            seq.getChildren().add(pause);
+            seq.getChildren().add(createTransition(next, width));
+            
         }
-
+        
         seq.play();
+        
     }
+    
+    private PauseTransition createTransition(Contestant next, double width) {
+        PauseTransition pause = new PauseTransition(Duration.seconds(4));
+        
+        pause.setOnFinished(e -> playSlide(next, width));
+        
+        return pause;
+    }
+        
+            
+    private void playSlide(Contestant next, double width) {
+        paneB.setTranslateX(width);
+        paneB.setDisable(false);
+        paneB.setVisible(true);
+
+        imageB.setImage(next.image);
+        imageB.setOpacity(0);
+
+        animateText("Contestant #" + next.number + ": " + next.name);
+
+        TranslateTransition slideIn = new TranslateTransition(Duration.millis(2500), paneB);
+        slideIn.setFromX(width);
+        slideIn.setToX(0);
+
+        FadeTransition fadeIn = new FadeTransition(Duration.millis(3400), imageB);
+        fadeIn.setFromValue(0);
+        fadeIn.setToValue(1);
+
+        TranslateTransition slideOut = new TranslateTransition(Duration.millis(2500), paneA);
+        slideOut.setFromX(0);
+        slideOut.setToX(-width);
+
+        FadeTransition fadeOut = new FadeTransition(Duration.millis(2500), imageA);
+        fadeOut.setFromValue(1);
+        fadeOut.setToValue(0);
+
+        ParallelTransition trans = new ParallelTransition(fadeIn, slideIn, slideOut, fadeOut);
+
+        trans.setOnFinished(ev -> {
+            imageA.setImage(next.image);
+            imageA.setOpacity(1);
+            imageB.setOpacity(0);
+            
+            paneA.setTranslateX(0);
+            paneB.setVisible(false);
+            paneB.setDisable(true);
+        });
+
+        trans.play();
+    }
+    
+    private void animateText(String newText) {
+        FadeTransition fadeOut = new FadeTransition(Duration.millis(1900), runnerId);
+        fadeOut.setFromValue(1);
+        fadeOut.setToValue(0);
+        
+        FadeTransition fadeIn = new FadeTransition(Duration.millis(1900), runnerId);
+        fadeIn.setFromValue(0);
+        fadeIn.setToValue(1);
+        
+        fadeOut.setOnFinished(e -> runnerId.setText(newText));
+        
+        new javafx.animation.SequentialTransition(fadeOut, fadeIn).play();
+    }
+    
 
     public class Contestant {
 
