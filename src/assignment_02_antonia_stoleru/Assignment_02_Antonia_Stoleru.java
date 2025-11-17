@@ -4,7 +4,11 @@
  */
 package assignment_02_antonia_stoleru;
 
+import java.io.IOException;
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
@@ -17,11 +21,21 @@ public class Assignment_02_Antonia_Stoleru extends Application {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        launch(args);
     }
 
     @Override
-    public void start(Stage stage) {
+    public void start(Stage stage) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("SlideShow.fxml"));
+        Parent root = loader.load();
         
+        SlideShowController controller = loader.getController();
+        
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.setTitle("Slideshow");
+        stage.show();
     }
+    
     
 }

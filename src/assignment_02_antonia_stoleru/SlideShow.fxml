@@ -11,10 +11,9 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="641.0" prefWidth="750.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="assignment_02_antonia_stoleru.SlideShowController">
+<AnchorPane fx:id="root" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="641.0" prefWidth="750.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="assignment_02_antonia_stoleru.SlideShowController">
    <children>
-      <Pane fx:id="paneA" layoutX="144.0" layoutY="71.0" prefHeight="400.0" prefWidth="443.0">
+      <Pane fx:id="paneA" layoutX="153.0" layoutY="71.0" prefHeight="400.0" prefWidth="443.0">
          <children>
             <Rectangle fx:id="recA" arcHeight="5.0" arcWidth="5.0" height="420.0" layoutX="-7.0" layoutY="-9.0" stroke="#ff007b" strokeType="INSIDE" style="-fx-stroke-width: 3;" width="460.0">
                <fill>
@@ -70,7 +69,7 @@
             <ImageView fx:id="imageB" fitWidth="300.0" layoutX="80.0" layoutY="63.0" pickOnBounds="true" preserveRatio="true" />
          </children>
       </Pane>
-      <Label fx:id="runnerId" layoutX="340.0" layoutY="495.0" style="-fx-font-weight: bold;" text="Label">
+      <Label fx:id="runnerId" alignment="CENTER" contentDisplay="CENTER" layoutX="340.0" layoutY="495.0" style="-fx-font-weight: bold;" text="Label" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="450.0">
          <font>
             <Font size="20.0" />
          </font>
