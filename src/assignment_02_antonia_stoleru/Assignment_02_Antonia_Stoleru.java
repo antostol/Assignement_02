@@ -26,6 +26,7 @@ public class Assignment_02_Antonia_Stoleru extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
+        //Loading fxml file
         FXMLLoader loader = new FXMLLoader(getClass().getResource("SlideShow.fxml"));
         Parent root = loader.load();
         

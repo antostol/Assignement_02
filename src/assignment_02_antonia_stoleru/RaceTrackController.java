@@ -24,7 +24,7 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
 public class RaceTrackController implements Initializable {
-
+    //Elements of fxml file
     @FXML
     private Button exitBtn;
 
@@ -75,23 +75,26 @@ public class RaceTrackController implements Initializable {
 
     /**
      * Initializes the controller class.
+     * Loads cat information and sets the correct images.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         contestants = loadContestants();
-
+        //Names and images for each cat
         setContestant(cat1, cat1Name, contestants.get(0));
         setContestant(cat2, cat2Name, contestants.get(1));
         setContestant(cat3, cat3Name, contestants.get(2));
         setContestant(cat4, cat4Name, contestants.get(3));
         setContestant(cat5, cat5Name, contestants.get(4));
     }
-
+    
+    //Helping method for setting
     private void setContestant(ImageView img, Label nameLabel, Contestant c) {
         nameLabel.setText(c.name);
         img.setImage(c.runningImage);
     }
-
+    
+    //List for loading contestants
     private List<Contestant> loadContestants() {
         return List.of(
                 new Contestant("Kitty",
@@ -116,15 +119,18 @@ public class RaceTrackController implements Initializable {
                 )
         );
     }
-
+    
+    //Method for handling start button (starts and resumes the race) -> plays animations and music
     @FXML
     private void handleStart(ActionEvent event) {
+        //Welcome message
         messageArea.setText("Welcome to cats' race!");
+        //If race ended start over
         if (raceOver) {
             resetRace();
-
             playRaceMusic();
             startRaceWithTransitions();
+        //If race paused resume it
         } else if (transitions != null && !transitions.isEmpty()) {
             for (TranslateTransition t : transitions) {
                 t.play();
@@ -133,13 +139,15 @@ public class RaceTrackController implements Initializable {
                 raceMusicPlayer.play();
             }
             messageArea.setText("Race resumed!");
+        //First time starting the race
         } else {
             messageArea.setText("Welcome to cats' race!");
             playRaceMusic();
             startRaceWithTransitions();
         }
     }
-
+    
+    //Handles pausing the race -> stops animations and music
     @FXML
     private void handlePause(ActionEvent event) {
         if (transitions != null && !transitions.isEmpty()) {
@@ -156,14 +164,18 @@ public class RaceTrackController implements Initializable {
             messageArea.setText("Race paused!");
         }
     }
-
+    
+    //Handles existing the program
     @FXML
     private void handleExit(ActionEvent event) {
         System.exit(0);
     }
-
+    
+    //Handles reseting the race -> images, animations, music
     private void resetRace() {
         raceOver = false;
+        
+        //Move cats back to starting line
         cat1.setTranslateX(0);
         cat2.setTranslateX(0);
         cat3.setTranslateX(0);
@@ -171,6 +183,7 @@ public class RaceTrackController implements Initializable {
         cat5.setTranslateX(0);
         messageArea.clear();
 
+        //Reset cat images
         cat1.setImage(contestants.get(0).runningImage);
         cat2.setImage(contestants.get(1).runningImage);
         cat3.setImage(contestants.get(2).runningImage);
@@ -178,13 +191,15 @@ public class RaceTrackController implements Initializable {
         cat5.setImage(contestants.get(4).runningImage);
     }
 
+    //Starts the actual race
     private void startRaceWithTransitions() {
         raceOver = false;
-        double finishX = racepane.getWidth() - 50;
+        double finishX = racepane.getWidth() - 50; //End position
 
         ImageView[] cats = {cat1, cat2, cat3, cat4, cat5};
         transitions = new java.util.ArrayList<>();
 
+        //Create animation for each cat
         for (int i = 0; i < cats.length; i++) {
             ImageView cat = cats[i];
 
@@ -194,6 +209,7 @@ public class RaceTrackController implements Initializable {
             translate.setFromX(0);
             translate.setToX(finishX - cat.getLayoutX());
 
+            //Declaring winner when race is over
             int finalI = i;
             translate.setOnFinished(e -> {
                 if (!raceOver) {
@@ -207,27 +223,38 @@ public class RaceTrackController implements Initializable {
         }
 
     }
-
+    
+    /**
+     * Called when the first cat finishes the race.
+     */
     private void declareWinner(int catIndex) {
         raceOver = true;
-
+        
+        //Stops music for winner music to come in
+        if (raceMusicPlayer != null) raceMusicPlayer.stop();
+        
         playWinnerMusic();
 
         Contestant winner = contestants.get(catIndex);
         showWinnerPopup(winner);
     }
-
+    
+    /**
+     * Shows a small popup window displaying the winner.
+     */
     private void showWinnerPopup(Contestant winner) {
         VBox root = new VBox(10);
         root.setAlignment(Pos.CENTER);
         root.setPadding(new Insets(20));
         root.setStyle("-fx-background-color: white;");
-
+        
+        //Winner's image
         ImageView winnerImg = new ImageView(winner.winnerImage);
         winnerImg.setFitWidth(150);
         winnerImg.setFitHeight(150);
         winnerImg.setPreserveRatio(true);
-
+        
+        //Winner's name
         Label message = new Label("Contestant " + winner.name + " Has won the race!");
         message.setStyle("-fx-font-weight: bold; -fx-text-fill: green; -fx-font-size: 16px;");
 
@@ -238,7 +265,8 @@ public class RaceTrackController implements Initializable {
         stage.setScene(new Scene(root, 400, 350));
         stage.show();
     }
-
+    
+    //Plays background music during race
     public void playRaceMusic() {
         String path = getClass().getResource("/musicrace.mp3").toExternalForm();
         Media media = new Media(path);
@@ -246,7 +274,8 @@ public class RaceTrackController implements Initializable {
         raceMusicPlayer.setCycleCount(MediaPlayer.INDEFINITE);
         raceMusicPlayer.play();
     }
-
+    
+    //Plays winner celebration music
     private void playWinnerMusic() {
         String path = getClass().getResource("/winningmusic.mp3").toExternalForm();
         Media media = new Media(path);
@@ -254,7 +283,8 @@ public class RaceTrackController implements Initializable {
         winnerMusicPlayer.setCycleCount(MediaPlayer.INDEFINITE);
         winnerMusicPlayer.play();
     }
-
+    
+    //Inner class that stores contestants' names and images
     public class Contestant {
 
         String name;

@@ -37,7 +37,8 @@ import javafx.stage.Stage;
  * @author Antonia Stoleru
  */
 public class SlideShowController implements Initializable {
-
+    
+    //Elements of fxml file
     @FXML
     private AnchorPane root;
     @FXML
@@ -70,6 +71,7 @@ public class SlideShowController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        //Load and start background music + throw exception
         try {
             String musicPath = getClass().getResource("/music.mp3").toExternalForm();
             Media media = new Media(musicPath);
@@ -80,6 +82,7 @@ public class SlideShowController implements Initializable {
             System.out.println("Music file not found");
         }
         
+        //Load contestants + images
         contestants = loadContestants();
 
         imageA.setImage(contestants.get(0).image);
@@ -88,9 +91,11 @@ public class SlideShowController implements Initializable {
         runnerId.setText("Contestant #" + contestants.get(0).number + ": " + contestants.get(0).name);
         runnerId.setOpacity(0);
         
+        //Prepare pane B (Second sliding pane which is hidden at first)
         paneB.setVisible(false);
         paneB.setDisable(true);
         
+        //Different animations for the slideshow
         FadeTransition imgIn = new FadeTransition(Duration.millis(1200), imageA);
         imgIn.setFromValue(0);
         imgIn.setToValue(1);
@@ -104,6 +109,7 @@ public class SlideShowController implements Initializable {
         initialIn.play();
     }
 
+    //Loads all the contestants for the slideshow
     private List<Contestant> loadContestants() {
         return List.of(
              new Contestant("Kitty", 1, new Image("/assignment_02_antonia_stoleru/Images/cat1.png")),
@@ -114,6 +120,7 @@ public class SlideShowController implements Initializable {
         );
     }
     
+    //Loads images
     private List<Image> loadImages() {
         return List.of(
                 new Image("/assignment_02_antonia_stoleru/Images/cat1.png"),
@@ -124,21 +131,24 @@ public class SlideShowController implements Initializable {
         );
     }
     
-
+    //Handles skip -> go to racetrack screen
     @FXML
     private void handleSkip(ActionEvent event) {
         goToRaceTrack();
     }
 
+    //Starts full animation sequence
     private void slideShow() {
         double width = root.getPrefWidth();
 
         SequentialTransition seq = new SequentialTransition();
         
+        //Delay before second contestant appears
         PauseTransition firstPause = new PauseTransition(Duration.seconds(0.8));
         firstPause.setOnFinished(e -> playSlide(contestants.get(1), width));
         seq.getChildren().add(firstPause);
-
+        
+        //Add remaining contestants
         for (int i = 2; i < contestants.size(); i++) {
             
             Contestant next = contestants.get(i);
@@ -158,6 +168,7 @@ public class SlideShowController implements Initializable {
         
     }
     
+    //Creates pauses between contestants
     private PauseTransition createTransition(Contestant next, double width) {
         PauseTransition pause = new PauseTransition(Duration.seconds(5));
         
@@ -166,7 +177,7 @@ public class SlideShowController implements Initializable {
         return pause;
     }
         
-            
+    //Plays one slide transition       
     private void playSlide(Contestant next, double width) {
         paneB.setTranslateX(width);
         paneB.setDisable(false);
@@ -175,8 +186,10 @@ public class SlideShowController implements Initializable {
         imageB.setImage(next.image);
         imageB.setOpacity(0);
 
+        //animating text
         animateText("Contestant #" + next.number + ": " + next.name);
-
+        
+        //All different animations for pane and image
         TranslateTransition slideIn = new TranslateTransition(Duration.millis(2500), paneB);
         slideIn.setFromX(width);
         slideIn.setToX(0);
@@ -196,7 +209,8 @@ public class SlideShowController implements Initializable {
         ParallelTransition trans = new ParallelTransition(fadeIn, slideIn, slideOut, fadeOut);
         
         lastTransition = trans;
-
+        
+        //Event handler for trans
         trans.setOnFinished(ev -> {
             imageA.setImage(next.image);
             imageA.setOpacity(1);
@@ -210,6 +224,7 @@ public class SlideShowController implements Initializable {
         trans.play();
     }
     
+    //Animates fading text between contestants
     private void animateText(String newText) {
         FadeTransition fadeOut = new FadeTransition(Duration.millis(1900), runnerId);
         fadeOut.setFromValue(1);
@@ -224,6 +239,7 @@ public class SlideShowController implements Initializable {
         new javafx.animation.SequentialTransition(fadeOut, fadeIn).play();
     }
     
+    //Goes directly to raceTrack
     private void goToRaceTrack() {
         if (mediaPlayer != null) {
             mediaPlayer.stop();
@@ -236,7 +252,7 @@ public class SlideShowController implements Initializable {
         if (lastTransition != null) {
             lastTransition.stop();
         }
-        
+        //Exception for FXMLloader and actually loading it
         try {
             
             FXMLLoader loader = new FXMLLoader(getClass().getResource("RaceTrack.fxml"));
@@ -255,7 +271,7 @@ public class SlideShowController implements Initializable {
         }
     }
     
-
+    //Inner class that stores contestant with their name number and image
     public class Contestant {
 
         String name;
