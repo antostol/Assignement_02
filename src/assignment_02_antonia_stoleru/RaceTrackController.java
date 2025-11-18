@@ -20,6 +20,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 public class RaceTrackController implements Initializable {
 
@@ -65,6 +67,10 @@ public class RaceTrackController implements Initializable {
     private List<Contestant> contestants;
     
     private List<TranslateTransition> transitions;
+    
+    private MediaPlayer raceMusicPlayer;
+    
+    private MediaPlayer winnerMusicPlayer;
     
     /**
      * Initializes the controller class.
@@ -114,7 +120,9 @@ public class RaceTrackController implements Initializable {
     private void handleStart(ActionEvent event) {
         messageArea.setText("Welcome to cats' race!");
         if (raceOver) 
-        resetRace();
+            resetRace();
+        
+        playRaceMusic();
         startRaceWithTransitions();
     }
 
@@ -124,6 +132,9 @@ public class RaceTrackController implements Initializable {
             for (TranslateTransition t : transitions) {
                 t.pause();
             }
+            if (raceMusicPlayer != null) raceMusicPlayer.pause();
+            if (winnerMusicPlayer != null) winnerMusicPlayer.pause();
+            
             messageArea.setText("Race paused!");
         }
     }
@@ -183,6 +194,8 @@ public class RaceTrackController implements Initializable {
     private void declareWinner(int catIndex) {
         raceOver = true;
         
+        playWinnerMusic();
+        
         Contestant winner = contestants.get(catIndex);
         showWinnerPopup(winner);
     }
@@ -208,6 +221,22 @@ public class RaceTrackController implements Initializable {
         stage.setTitle("Winner!");
         stage.setScene(new Scene(root, 400, 350));
         stage.show();
+    }
+    
+    public void playRaceMusic() {
+        String path = getClass().getResource("/musicrace.mp3").toExternalForm();
+        Media media = new Media(path);
+        raceMusicPlayer = new MediaPlayer(media);
+        raceMusicPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+        raceMusicPlayer.play();
+    }
+    
+    private void playWinnerMusic() {
+        String path = getClass().getResource("/winningmusic.mp3").toExternalForm();
+        Media media = new Media(path);
+        winnerMusicPlayer = new MediaPlayer(media);
+        winnerMusicPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+        winnerMusicPlayer.play();
     }
     
     public class Contestant {
