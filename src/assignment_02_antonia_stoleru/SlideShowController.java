@@ -23,6 +23,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+
 
 /**
  * FXML Controller class
@@ -42,21 +45,33 @@ public class SlideShowController implements Initializable {
     @FXML
     private Pane paneB;
     @FXML
-    private Rectangle recA1;
-    @FXML
+    private Rectangle recB;
+    @FXML       
     private ImageView imageB;
     @FXML
     private Label runnerId;
     @FXML
     private Button skip;
     
-    private List<Contestant> contestants;
+    private List<Contestant> contestants;   
+    
+    private MediaPlayer mediaPlayer;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        try {
+            String musicPath = getClass().getResource("/music.mp3").toExternalForm();
+            Media media = new Media(musicPath);
+            mediaPlayer = new MediaPlayer(media);
+            mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+            mediaPlayer.play();
+        }catch (Exception e){
+            System.out.println("Music file not found");
+        }
+        
         contestants = loadContestants();
 
         imageA.setImage(contestants.get(0).image);
@@ -100,6 +115,7 @@ public class SlideShowController implements Initializable {
                 new Image("/assignment_02_antonia_stoleru/Images/cat5.png")
         );
     }
+    
 
     @FXML
     private void handleSkip(ActionEvent event) {

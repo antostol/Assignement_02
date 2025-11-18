@@ -43,7 +43,7 @@
       </Pane>
       <Pane fx:id="paneB" layoutX="148.0" layoutY="58.0" prefHeight="430.0" prefWidth="460.0">
          <children>
-            <Rectangle fx:id="recA1" arcHeight="5.0" arcWidth="5.0" height="430.0" layoutX="-2.0" layoutY="4.0" stroke="#ff007b" strokeType="INSIDE" style="-fx-stroke-width: 3;" width="460.0">
+            <Rectangle fx:id="recB" arcHeight="5.0" arcWidth="5.0" height="430.0" layoutX="-2.0" layoutY="4.0" stroke="#ff007b" strokeType="INSIDE" style="-fx-stroke-width: 3;" width="460.0">
                <fill>
                   <LinearGradient endX="1.0" endY="1.0" startX="1.0">
                      <stops>
@@ -54,7 +54,7 @@
                         </Stop>
                         <Stop offset="0.006729475100942127">
                            <color>
-                              <Color red="1.0" green="0.5666666626930237" blue="0.7761111259460449" />
+                              <Color red="1.0" green="0.5647059082984924" blue="0.7764706015586853" />
                            </color>
                         </Stop>
                         <Stop offset="1.0">
