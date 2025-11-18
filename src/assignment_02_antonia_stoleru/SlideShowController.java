@@ -14,7 +14,10 @@ import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -56,6 +59,10 @@ public class SlideShowController implements Initializable {
     private List<Contestant> contestants;   
     
     private MediaPlayer mediaPlayer;
+    
+    private SequentialTransition masterTransition;
+    
+    private ParallelTransition lastTransition;
 
     /**
      * Initializes the controller class.
@@ -119,6 +126,28 @@ public class SlideShowController implements Initializable {
 
     @FXML
     private void handleSkip(ActionEvent event) {
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+        }
+        
+        if (masterTransition != null) {
+            masterTransition.stop();
+        }
+        
+        if (lastTransition != null) {
+            lastTransition.stop();
+        }
+        
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("RaceTrack.fxml"));
+            Parent raceRoot = loader.load();
+            
+            Scene scene = skip.getScene();
+            scene.setRoot(raceRoot);
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void slideShow() {
@@ -137,7 +166,8 @@ public class SlideShowController implements Initializable {
             
         }
         
-        seq.play();
+        masterTransition = seq;
+        masterTransition.play();
         
     }
     
@@ -177,6 +207,8 @@ public class SlideShowController implements Initializable {
         fadeOut.setToValue(0);
 
         ParallelTransition trans = new ParallelTransition(fadeIn, slideIn, slideOut, fadeOut);
+        
+        lastTransition = trans;
 
         trans.setOnFinished(ev -> {
             imageA.setImage(next.image);
