@@ -28,6 +28,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.stage.Stage;
 
 
 /**
@@ -126,28 +127,7 @@ public class SlideShowController implements Initializable {
 
     @FXML
     private void handleSkip(ActionEvent event) {
-        if (mediaPlayer != null) {
-            mediaPlayer.stop();
-        }
-        
-        if (masterTransition != null) {
-            masterTransition.stop();
-        }
-        
-        if (lastTransition != null) {
-            lastTransition.stop();
-        }
-        
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("RaceTrack.fxml"));
-            Parent raceRoot = loader.load();
-            
-            Scene scene = skip.getScene();
-            scene.setRoot(raceRoot);
-            
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        goToRaceTrack();
     }
 
     private void slideShow() {
@@ -167,12 +147,19 @@ public class SlideShowController implements Initializable {
         }
         
         masterTransition = seq;
+        
+        masterTransition.setOnFinished(e -> {
+            if (lastTransition != null) {
+                lastTransition.setOnFinished(ev -> goToRaceTrack());
+            }
+        });
+        
         masterTransition.play();
         
     }
     
     private PauseTransition createTransition(Contestant next, double width) {
-        PauseTransition pause = new PauseTransition(Duration.seconds(4));
+        PauseTransition pause = new PauseTransition(Duration.seconds(5));
         
         pause.setOnFinished(e -> playSlide(next, width));
         
@@ -235,6 +222,37 @@ public class SlideShowController implements Initializable {
         fadeOut.setOnFinished(e -> runnerId.setText(newText));
         
         new javafx.animation.SequentialTransition(fadeOut, fadeIn).play();
+    }
+    
+    private void goToRaceTrack() {
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+        }
+        
+        if (masterTransition != null) {
+            masterTransition.stop();
+        }
+        
+        if (lastTransition != null) {
+            lastTransition.stop();
+        }
+        
+        try {
+            
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("RaceTrack.fxml"));
+            Parent raceRoot = loader.load();
+            
+            Scene scene = skip.getScene();
+            scene.setRoot(raceRoot);
+            
+            Stage stage = (Stage) scene.getWindow();
+            stage.setWidth(614);
+            stage.setHeight(440);
+   
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     
 
