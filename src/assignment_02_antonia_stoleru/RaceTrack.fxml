@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-    <?import javafx.geometry.Insets?>
-    <?import javafx.scene.control.Button?>
-    <?import javafx.scene.control.Label?>
-    <?import javafx.scene.control.TextArea?>
-    <?import javafx.scene.image.Image?>
-    <?import javafx.scene.image.ImageView?>
-    <?import javafx.scene.layout.BorderPane?>
-    <?import javafx.scene.layout.HBox?>
-    <?import javafx.scene.layout.Pane?>
-    <?import javafx.scene.paint.Color?>
-    <?import javafx.scene.paint.RadialGradient?>
-    <?import javafx.scene.paint.Stop?>
-    <?import javafx.scene.shape.Line?>
-    <?import javafx.scene.shape.Rectangle?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.RadialGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
 
-    <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="assignment_02_antonia_stoleru.RaceTrackController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="assignment_02_antonia_stoleru.RaceTrackController">
        <top>
           <HBox alignment="CENTER" prefHeight="52.0" prefWidth="600.0" BorderPane.alignment="CENTER">
              <children>
@@ -65,6 +66,45 @@
                    </image>
                 </ImageView>
                 <Line endX="414.0" layoutX="182.0" layoutY="247.0" startX="-182.0" strokeWidth="3.0" />
+            <ImageView fx:id="cat5" fitHeight="32.0" fitWidth="44.0" layoutX="125.0" layoutY="202.0" pickOnBounds="true">
+                <image>
+                    <Image url="@Images/catrunning.png" />
+                </image>
+            </ImageView>
+            <Label fx:id="cat5Name" layoutX="64.0" layoutY="218.0" prefHeight="17.0" prefWidth="68.0" textAlignment="CENTER">
+               <font>
+                  <Font size="10.0" />
+               </font></Label>
+            <ImageView fx:id="cat4" fitHeight="32.0" fitWidth="44.0" layoutX="125.0" layoutY="159.0" pickOnBounds="true">
+                <image>
+                    <Image url="@Images/catrunning.png" />
+                </image>
+            </ImageView>
+            <Label fx:id="cat4Name" layoutX="73.0" layoutY="166.0" prefHeight="17.0" prefWidth="71.0" text="" textAlignment="CENTER">
+               <font>
+                  <Font size="10.0" />
+               </font></Label>
+            <ImageView fx:id="cat3" fitHeight="32.0" fitWidth="44.0" layoutX="125.0" layoutY="108.0" pickOnBounds="true">
+                <image>
+                    <Image url="@Images/catrunning.png" />
+                </image>
+            </ImageView>
+            <Label fx:id="cat3Name" layoutX="66.0" layoutY="119.0" prefHeight="17.0" prefWidth="90.0" text="" textAlignment="CENTER">
+               <font>
+                  <Font size="10.0" />
+               </font></Label>
+            <ImageView fx:id="cat2" fitHeight="32.0" fitWidth="44.0" layoutX="125.0" layoutY="61.0" pickOnBounds="true">
+                <image>
+                    <Image url="@Images/catrunning.png" />
+                </image>
+            </ImageView>
+            <Label fx:id="cat2Name" layoutX="71.0" layoutY="71.0" prefHeight="17.0" prefWidth="97.0" text="" textAlignment="CENTER" />
+            <ImageView fx:id="cat1" fitHeight="32.0" fitWidth="42.0" layoutX="125.0" layoutY="10.0" pickOnBounds="true">
+                <image>
+                    <Image url="@Images/catrunning.png" />
+                </image>
+            </ImageView>
+            <Label fx:id="cat1Name" layoutX="77.0" layoutY="21.0" prefHeight="17.0" prefWidth="56.0" text="" textAlignment="CENTER" />
              </children>
              <opaqueInsets>
                 <Insets />
@@ -76,9 +116,9 @@
              <children>
                 <HBox alignment="CENTER" prefHeight="100.0" prefWidth="300.0" spacing="10.0" style="-fx-background-color: WHITE; -fx-border-color: black; -fx-border-width: 3;">
                    <children>
-                      <Button fx:id="startBtn" mnemonicParsing="false" style="-fx-border-color: darkgreen; -fx-background-color: #cefab9; -fx-font-weight: bold; -fx-border-width: 2;" text="Start" />
-                      <Button fx:id="pauseBtn" mnemonicParsing="false" style="-fx-border-color: goldenrod; -fx-background-color: #fcf0bd; -fx-font-weight: bold; -fx-border-width: 2;" text="Pause" />
-                      <Button fx:id="exitBtn" mnemonicParsing="false" style="-fx-border-color: #ff40b6; -fx-background-color: #fccce9; -fx-font-weight: bold; -fx-border-width: 2;" text="Exit" />
+                      <Button fx:id="startBtn" mnemonicParsing="false" onAction="#handleStart" style="-fx-border-color: darkgreen; -fx-background-color: #cefab9; -fx-font-weight: bold; -fx-border-width: 2;" text="Start" />
+                      <Button fx:id="pauseBtn" mnemonicParsing="false" onAction="#handlePause" style="-fx-border-color: goldenrod; -fx-background-color: #fcf0bd; -fx-font-weight: bold; -fx-border-width: 2;" text="Pause" />
+                      <Button fx:id="exitBtn" mnemonicParsing="false" onAction="#handleExit" style="-fx-border-color: #ff40b6; -fx-background-color: #fccce9; -fx-font-weight: bold; -fx-border-width: 2;" text="Exit" />
                    </children>
                    <padding>
                       <Insets top="10.0" />
